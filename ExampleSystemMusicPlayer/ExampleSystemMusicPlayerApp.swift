@@ -12,6 +12,7 @@ struct ExampleSystemMusicPlayerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(Music())
         }
     }
 }

@@ -8,14 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selection = 1
+    @EnvironmentObject var music: Music
+
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        TabView(selection: $selection) {
+            MediaItemView()
+                .tabItem {
+                    Image(systemName: "music.note")
+                        .font(.title)
+                    Text("MediaItem")
+                }
+                .tag(1)
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(Music())
     }
 }
