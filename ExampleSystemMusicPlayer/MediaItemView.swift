@@ -13,7 +13,7 @@ struct MediaItemView: View {
     var body: some View {
         List {
             ForEach(0..<self.music.propertyValues.count) { index in
-                VStack {
+                VStack(alignment: .leading) {
                     Text(self.music.propertyValues[index].0)
                     Text(self.music.propertyValues[index].1)
                 }
