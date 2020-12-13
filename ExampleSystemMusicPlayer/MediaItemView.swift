@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MediaPlayer
 
 struct MediaItemView: View {
     @EnvironmentObject var music: Music
@@ -15,7 +16,16 @@ struct MediaItemView: View {
             ForEach(0..<self.music.propertyValues.count) { index in
                 VStack(alignment: .leading) {
                     Text(self.music.propertyValues[index].0)
-                    Text(self.music.propertyValues[index].1)
+                    if self.music.propertyValues[index].0 != MPMediaItemPropertyArtwork {
+                        Text(self.music.propertyValues[index].1)
+                    }
+                    else {
+                        if let artwork = self.music.artWork {
+                            Image(uiImage: artwork)
+                            .resizable()
+                            .scaledToFit()
+                        }
+                    }
                 }
             }
         }

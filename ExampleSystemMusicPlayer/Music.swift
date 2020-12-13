@@ -10,29 +10,49 @@ import MediaPlayer
 
 final class Music: ObservableObject {
     var player: MPMusicPlayerController? = nil
-    let propertyKeys = [
+    let propertyKeys: [(name: String, type: Any.Type)] = [
         (MPMediaItemPropertyAlbumArtist, String.self),
-        (MPMediaItemPropertyAlbumArtistPersistentID, String.self),
-        (MPMediaItemPropertyAlbumPersistentID, String.self),
+        (MPMediaItemPropertyAlbumArtistPersistentID, MPMediaEntityPersistentID.self),
+        (MPMediaItemPropertyAlbumPersistentID, MPMediaEntityPersistentID.self),
         (MPMediaItemPropertyAlbumTitle, String.self),
+        (MPMediaItemPropertyAlbumTrackCount, Int.self),
+        (MPMediaItemPropertyAlbumTrackNumber, Int.self),
         (MPMediaItemPropertyArtist, String.self),
-        (MPMediaItemPropertyArtistPersistentID, String.self),
+        (MPMediaItemPropertyArtistPersistentID, MPMediaEntityPersistentID.self),
+        (MPMediaItemPropertyArtwork, MPMediaItemArtwork.self),
+        (MPMediaItemPropertyAssetURL, URL.self),
+        (MPMediaItemPropertyBeatsPerMinute, Int.self),
+        (MPMediaItemPropertyBookmarkTime, TimeInterval.self),
+        (MPMediaItemPropertyIsCloudItem, Bool.self),
+        (MPMediaItemPropertyComments, String.self),
+        (MPMediaItemPropertyIsCompilation, Bool.self),
         (MPMediaItemPropertyComposer, String.self),
-        (MPMediaItemPropertyComposerPersistentID, String.self),
+        (MPMediaItemPropertyComposerPersistentID, MPMediaEntityPersistentID.self),
+        (MPMediaItemPropertyDateAdded, Date.self),
+        (MPMediaItemPropertyDiscCount, Int.self),
+        (MPMediaItemPropertyDiscNumber, Int.self),
+        (MPMediaItemPropertyIsExplicit, Bool.self),
         (MPMediaItemPropertyGenre, String.self),
-        (MPMediaItemPropertyGenrePersistentID, String.self),
-        (MPMediaItemPropertyHasProtectedAsset, String.self),
-        (MPMediaItemPropertyIsCompilation, String.self),
-        (MPMediaItemPropertyIsCloudItem, String.self),
-        (MPMediaItemPropertyMediaType, String.self),
-        (MPMediaItemPropertyPersistentID, String.self),
-        (MPMediaItemPropertyPlayCount, String.self),
-        (MPMediaItemPropertyPodcastPersistentID, String.self),
+        (MPMediaItemPropertyGenrePersistentID, MPMediaEntityPersistentID.self),
+        (MPMediaItemPropertyLastPlayedDate, Date.self),
+        (MPMediaItemPropertyLyrics, String.self),
+        (MPMediaItemPropertyMediaType, MPMediaType.self),
+        (MPMediaItemPropertyPersistentID, MPMediaEntityPersistentID.self),
+        (MPMediaItemPropertyPlayCount, Int.self),
+        (MPMediaItemPropertyPlaybackDuration, TimeInterval.self),
+        (MPMediaItemPropertyPlaybackStoreID, String.self),
+        (MPMediaItemPropertyPodcastPersistentID, MPMediaEntityPersistentID.self),
         (MPMediaItemPropertyPodcastTitle, String.self),
+        (MPMediaItemPropertyHasProtectedAsset, Bool.self),
+        (MPMediaItemPropertyRating, Int.self),
+        (MPMediaItemPropertyReleaseDate, Date.self),
+        (MPMediaItemPropertySkipCount, Int.self),
         (MPMediaItemPropertyTitle, String.self),
+        (MPMediaItemPropertyUserGrouping, String.self),
     ]
     @Published var propertyValues: [(String, String)] = []
     @Published var mediaItem: MPMediaItem? = nil
+    @Published var artWork: UIImage? = nil
 
     init() {
         self.player = MPMusicPlayerController.systemMusicPlayer
@@ -51,15 +71,95 @@ final class Music: ObservableObject {
         self.propertyValues = []
         self.mediaItem = self.player!.nowPlayingItem
         for propertyKey in propertyKeys {
-            print(propertyKey.1)
-
+            print("\(propertyKey.name):\(propertyKey.type)")
             
-//            if let v = self.mediaItem?.value(forProperty: propertyKey) as? String {
-//                value = v
-//            }
-//            self.propertyValues.append((propertyKey, value))
+            var valueString = ""
+            if propertyKey.type == String.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? String {
+                    valueString = value
+                }
+            }
+            else if propertyKey.type == MPMediaEntityPersistentID.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? MPMediaEntityPersistentID {
+                    valueString = String(value)
+                }
+            }
+            else if propertyKey.type == Int.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? Int {
+                    valueString = String(value)
+                }
+            }
+            else if propertyKey.type == TimeInterval.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? TimeInterval {
+                    valueString = String(value)
+                }
+            }
+            else if propertyKey.type == Bool.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? Bool {
+                    valueString = String(value)
+                }
+            }
+            else if propertyKey.type == URL.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? URL {
+                    valueString = value.absoluteString
+                }
+            }
+            else if propertyKey.type == MPMediaItemArtwork.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? MPMediaItemArtwork {
+                    self.artWork = value.image(at: CGSize(width: value.bounds.width, height: value.bounds.height))
+                }
+            }
+            else if propertyKey.type == Date.self {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .long
+                dateFormatter.timeStyle = .medium
+                dateFormatter.locale = .current
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? Date {
+                    valueString = dateFormatter.string(from: value)
+                }
+            }
+            else if propertyKey.type == MPMediaType.self {
+                if let value = self.mediaItem?.value(forProperty: propertyKey.name) as? UInt {
+                    switch value {
+                    case MPMediaType.music.rawValue:
+                        valueString = "music"
+                    case MPMediaType.podcast.rawValue:
+                        valueString = "podcast"
+                    case MPMediaType.audioBook.rawValue:
+                        valueString = "audioBook"
+                    case MPMediaType.audioITunesU.rawValue:
+                        valueString = "audioITunesU"
+                    case MPMediaType.anyAudio.rawValue:
+                        valueString = "anyAudio"
+                    case MPMediaType.movie.rawValue:
+                        valueString = "movie"
+                    case MPMediaType.tvShow.rawValue:
+                        valueString = "tvShow"
+                    case MPMediaType.videoPodcast.rawValue:
+                        valueString = "videoPodcast"
+                    case MPMediaType.musicVideo.rawValue:
+                        valueString = "musicVideo"
+                    case MPMediaType.videoITunesU.rawValue:
+                        valueString = "videoITunesU"
+                    case MPMediaType.homeVideo.rawValue:
+                        valueString = "homeVideo"
+                    case MPMediaType.anyVideo.rawValue:
+                        valueString = "anyVideo"
+                    case MPMediaType.any.rawValue:
+                        valueString = "any"
+                    default:
+                        valueString = "none"
+                    }
+                }
+            }
+            self.propertyValues.append((propertyKey.name, valueString))
+            if let xxx = self.mediaItem?.value(forProperty: propertyKey.name) {
+                print(xxx)
+            }
+            else {
+                print("No get property value.")
+            }
         }
-        print(self.propertyValues)
     }
-
+    
 }
