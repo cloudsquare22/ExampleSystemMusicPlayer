@@ -13,9 +13,16 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selection) {
+            MusicPlayerView()
+                .tabItem {
+                    Image(systemName: "ipod")
+                        .font(.title)
+                    Text("MusicPlayer")
+                }
+                .tag(0)
             MediaItemView()
                 .tabItem {
-                    Image(systemName: "music.note")
+                    Image(systemName: "music.note.list")
                         .font(.title)
                     Text("MediaItem")
                 }

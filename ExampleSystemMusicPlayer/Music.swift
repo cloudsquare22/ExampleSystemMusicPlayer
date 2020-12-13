@@ -53,6 +53,9 @@ final class Music: ObservableObject {
     @Published var propertyValues: [(String, String)] = []
     @Published var mediaItem: MPMediaItem? = nil
     @Published var artWork: UIImage? = nil
+    @Published var playerModesStates: [(String, String)] = []
+    let playbackStateString = ["stopped", "playing", "paused", "interrupted", "seekingForward", "seekingBackward"]
+    let repeatModeString = ["default", "none", "one", "all"]
 
     init() {
         self.player = MPMusicPlayerController.systemMusicPlayer
@@ -60,11 +63,21 @@ final class Music: ObservableObject {
         notificationCenter.addObserver(self, selector: #selector(Music.changeMusic(_:)), name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange, object: player)
         self.mediaItem = self.player!.nowPlayingItem
         setPropertyValues()
+        setPlayerModesStates()
     }
 
     @objc func changeMusic(_ notification:Notification?) {
         print(#function)
         setPropertyValues()
+        setPlayerModesStates()
+    }
+    
+    func setPlayerModesStates() {
+        self.playerModesStates = []
+        self.playerModesStates.append(("nowPlayingItem", "Go to MediaItem Tab."))
+        self.playerModesStates.append(("indexOfNowPlayingItem", "\(self.player!.indexOfNowPlayingItem)"))
+        self.playerModesStates.append(("playbackState", self.playbackStateString[self.player!.playbackState.rawValue]))
+        self.playerModesStates.append(("repeatMode", self.repeatModeString[self.player!.repeatMode.rawValue]))
     }
     
     func setPropertyValues() {
