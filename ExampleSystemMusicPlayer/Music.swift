@@ -56,6 +56,7 @@ final class Music: ObservableObject {
     @Published var playerModesStates: [(String, String)] = []
     let playbackStateString = ["stopped", "playing", "paused", "interrupted", "seekingForward", "seekingBackward"]
     let repeatModeString = ["default", "none", "one", "all"]
+    let shuffleModeString = ["default", "off", "songs", "albums"]
 
     init() {
         self.player = MPMusicPlayerController.systemMusicPlayer
@@ -78,6 +79,7 @@ final class Music: ObservableObject {
         self.playerModesStates.append(("indexOfNowPlayingItem", "\(self.player!.indexOfNowPlayingItem)"))
         self.playerModesStates.append(("playbackState", self.playbackStateString[self.player!.playbackState.rawValue]))
         self.playerModesStates.append(("repeatMode", self.repeatModeString[self.player!.repeatMode.rawValue]))
+        self.playerModesStates.append(("shuffleMode", self.shuffleModeString[self.player!.shuffleMode.rawValue]))
     }
     
     func setPropertyValues() {
