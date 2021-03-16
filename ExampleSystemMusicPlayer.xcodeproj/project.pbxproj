@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D2D6B8B2600CEDD006787D0 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2D6B8A2600CEDD006787D0 /* SongListView.swift */; };
 		8D4015952584EB8300060ADC /* ExampleSystemMusicPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4015942584EB8300060ADC /* ExampleSystemMusicPlayerApp.swift */; };
 		8D4015972584EB8300060ADC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4015962584EB8300060ADC /* ContentView.swift */; };
 		8D4015992584EB8300060ADC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D4015982584EB8300060ADC /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D2D6B8A2600CEDD006787D0 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		8D4015912584EB8200060ADC /* ExampleSystemMusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSystemMusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D4015942584EB8300060ADC /* ExampleSystemMusicPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSystemMusicPlayerApp.swift; sourceTree = "<group>"; };
 		8D4015962584EB8300060ADC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				8D50BC102584F2B500B61917 /* MediaItemView.swift */,
 				8D50BC1A2585EE7000B61917 /* Localizable.strings */,
 				8D50BC1E258628F200B61917 /* MusicPlayerView.swift */,
+				8D2D6B8A2600CEDD006787D0 /* SongListView.swift */,
 			);
 			path = ExampleSystemMusicPlayer;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D50BC1F258628F200B61917 /* MusicPlayerView.swift in Sources */,
+				8D2D6B8B2600CEDD006787D0 /* SongListView.swift in Sources */,
 				8D50BC112584F2B500B61917 /* MediaItemView.swift in Sources */,
 				8D4015972584EB8300060ADC /* ContentView.swift in Sources */,
 				8D4015952584EB8300060ADC /* ExampleSystemMusicPlayerApp.swift in Sources */,

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selection = 1
+    @State private var selection = 2
     @EnvironmentObject var music: Music
 
     var body: some View {
@@ -20,13 +20,20 @@ struct ContentView: View {
                     Text("MusicPlayer")
                 }
                 .tag(0)
-            MediaItemView()
+//            MediaItemView()
+//                .tabItem {
+//                    Image(systemName: "music.note.list")
+//                        .font(.title)
+//                    Text("MediaItem")
+//                }
+//                .tag(1)
+            SongListView()
                 .tabItem {
                     Image(systemName: "music.note.list")
                         .font(.title)
                     Text("MediaItem")
                 }
-                .tag(1)
+                .tag(2)
         }
     }
 }

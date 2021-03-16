@@ -10,6 +10,7 @@ import MediaPlayer
 
 struct MediaItemView: View {
     @EnvironmentObject var music: Music
+    var item: MPMediaItem? = nil
 
     var body: some View {
         List {
@@ -28,6 +29,10 @@ struct MediaItemView: View {
                     }
                 }
             }
+        }
+        .onAppear() {
+            print("*** lalala ***")
+            self.music.setPropertyValues(item: self.item)
         }
     }
 }

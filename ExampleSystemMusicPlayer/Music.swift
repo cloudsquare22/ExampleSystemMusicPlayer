@@ -54,14 +54,15 @@ final class Music: ObservableObject {
     @Published var mediaItem: MPMediaItem? = nil
     @Published var artWork: UIImage? = nil
     @Published var playerModesStates: [(String, String)] = []
+    @Published var songs: [MPMediaItem] = []
     let playbackStateString = ["stopped", "playing", "paused", "interrupted", "seekingForward", "seekingBackward"]
     let repeatModeString = ["default", "none", "one", "all"]
     let shuffleModeString = ["default", "off", "songs", "albums"]
 
     init() {
         self.player = MPMusicPlayerController.systemMusicPlayer
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(Music.changeMusic(_:)), name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange, object: player)
+//        let notificationCenter = NotificationCenter.default
+//        notificationCenter.addObserver(self, selector: #selector(Music.changeMusic(_:)), name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange, object: player)
         self.mediaItem = self.player!.nowPlayingItem
         setPropertyValues()
         setPlayerModesStates()
@@ -82,9 +83,14 @@ final class Music: ObservableObject {
         self.playerModesStates.append(("shuffleMode", self.shuffleModeString[self.player!.shuffleMode.rawValue]))
     }
     
-    func setPropertyValues() {
+    func setPropertyValues(item: MPMediaItem? = nil) {
         self.propertyValues = []
-        self.mediaItem = self.player!.nowPlayingItem
+        if item == nil {
+            self.mediaItem = self.player!.nowPlayingItem
+        }
+        else {
+            self.mediaItem = item
+        }
         for propertyKey in propertyKeys {
             print("\(propertyKey.name):\(propertyKey.type)")
             
@@ -174,6 +180,13 @@ final class Music: ObservableObject {
             else {
                 print("No get property value.")
             }
+        }
+    }
+    
+    func setSongs() {
+        let mPMediaQuery = MPMediaQuery.songs()
+        if let items = mPMediaQuery.items {
+            self.songs = items
         }
     }
     
