@@ -18,7 +18,8 @@ struct SongListView: View {
                     NavigationLink(self.music.songs[index].title!, destination: MediaItemView(item: self.music.songs[index]))
                 }
             }
-            .navigationBarTitle("Songs", displayMode: .inline)
+            .navigationTitle(Text("\(self.music.songs.count) songs"))
+//            .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear() {
             print("SongListView." + #function)
