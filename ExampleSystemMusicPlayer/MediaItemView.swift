@@ -14,6 +14,11 @@ struct MediaItemView: View {
 
     var body: some View {
         List {
+            Button(action: {
+                self.music.onePlay(item: self.item!)
+            }, label: {
+                Text("Play song")
+            })
             ForEach(0..<self.music.propertyValues.count) { index in
                 VStack(alignment: .leading) {
                     Text(self.music.propertyValues[index].0)

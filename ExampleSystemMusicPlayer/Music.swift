@@ -184,10 +184,19 @@ final class Music: ObservableObject {
     }
     
     func setSongs() {
+        print(#function)
+        self.songs = []
         let mPMediaQuery = MPMediaQuery.songs()
         if let items = mPMediaQuery.items {
+            print(items.count)
             self.songs = items
         }
+    }
+    
+    func onePlay(item: MPMediaItem) {
+        let items: MPMediaItemCollection = MPMediaItemCollection(items: [item])
+        self.player!.setQueue(with: items)
+        self.player?.play()
     }
     
 }
