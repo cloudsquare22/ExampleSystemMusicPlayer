@@ -188,8 +188,11 @@ final class Music: ObservableObject {
         self.songs = []
         let mPMediaQuery = MPMediaQuery.songs()
         if let items = mPMediaQuery.items {
-            print(items.count)
-            self.songs = items
+            let sortItems = items.sorted(by: { (a, b) -> Bool in
+                a.title! < b.title!
+            })
+            print(sortItems.count)
+            self.songs = sortItems
         }
     }
     
