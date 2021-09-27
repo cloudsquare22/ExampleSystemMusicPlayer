@@ -35,6 +35,7 @@ struct MediaItemView: View {
                 }
             }
         }
+        .navigationTitle(self.item!.title!)
         .onAppear() {
             print("*** lalala ***")
             self.music.setPropertyValues(item: self.item)
