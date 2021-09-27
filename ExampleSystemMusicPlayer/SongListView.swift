@@ -16,10 +16,17 @@ struct SongListView: View {
                 NavigationLink("Now Playing", destination: MediaItemView(item: self.music.player?.nowPlayingItem))
                 ForEach(0..<self.music.songs.count,  id: \.self) { index in
                     NavigationLink(destination: MediaItemView(item: self.music.songs[index])) {
-                        HStack {
-                            Text(self.music.songs[index].title!)
-                            Spacer()
-                            Text("\(self.music.songs[index].playCount)")
+                        VStack {
+                            HStack {
+                                Text(self.music.songs[index].title!)
+                                Spacer()
+                                Text("\(self.music.songs[index].playCount)")
+                            }
+                            HStack {
+                                Text(self.music.songs[index].artist!)
+                                    .font(.caption)
+                                Spacer()
+                            }
                         }
                     }
                 }
