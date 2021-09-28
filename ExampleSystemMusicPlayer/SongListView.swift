@@ -10,12 +10,20 @@ import SwiftUI
 struct SongListView: View {
     @EnvironmentObject var music: Music
     @State var searchText: String = ""
+    @State var selection: Int = 0
 
     var body: some View {
         NavigationView {
             List {
                 Section() {
                     TextField("Search Text", text: self.$searchText)
+                    Picker(selection: self.$selection, content: {
+                        Text("Title").tag(0)
+                        Text("Album Title").tag(1)
+                        Text("Artist").tag(2)
+                    }, label: {})
+                        .pickerStyle(SegmentedPickerStyle())
+                        .labelsHidden()
                 }
                 NavigationLink("Now Playing", destination: MediaItemView(item: self.music.player?.nowPlayingItem))
                 ForEach(0..<self.music.songs.count,  id: \.self) { index in
@@ -36,7 +44,8 @@ struct SongListView: View {
                 }
             }
             .onSubmit(of: .text) {
-                self.music.setSongs(search: self.searchText)
+                self.music.setSongs(search: self.searchText,
+                                    selection: self.selection)
             }
             .navigationTitle(Text("\(self.music.songs.count) songs"))
 //            .navigationBarTitleDisplayMode(.inline)
