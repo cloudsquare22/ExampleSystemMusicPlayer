@@ -9,10 +9,14 @@ import SwiftUI
 
 struct SongListView: View {
     @EnvironmentObject var music: Music
+    @State var searchText: String = ""
 
     var body: some View {
         NavigationView {
             List {
+                Section() {
+                    TextField("Search Text", text: self.$searchText)
+                }
                 NavigationLink("Now Playing", destination: MediaItemView(item: self.music.player?.nowPlayingItem))
                 ForEach(0..<self.music.songs.count,  id: \.self) { index in
                     NavigationLink(destination: MediaItemView(item: self.music.songs[index])) {
@@ -30,6 +34,9 @@ struct SongListView: View {
                         }
                     }
                 }
+            }
+            .onSubmit(of: .text) {
+                self.music.setSongs(search: self.searchText)
             }
             .navigationTitle(Text("\(self.music.songs.count) songs"))
 //            .navigationBarTitleDisplayMode(.inline)
