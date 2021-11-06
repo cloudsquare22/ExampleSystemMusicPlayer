@@ -22,14 +22,16 @@ struct MediaItemView: View {
             ForEach(0..<self.music.propertyValues.count) { index in
                 VStack(alignment: .leading) {
                     Text(self.music.propertyValues[index].0)
+                        .foregroundColor(.gray)
                     if self.music.propertyValues[index].0 != MPMediaItemPropertyArtwork {
                         Text(self.music.propertyValues[index].1)
+                            .padding(.leading)
                     }
                     else {
                         if let artwork = self.music.artWork {
                             Image(uiImage: artwork)
-                            .resizable()
-                            .scaledToFit()
+                                .resizable()
+                                .scaledToFit()
                         }
                     }
                 }
