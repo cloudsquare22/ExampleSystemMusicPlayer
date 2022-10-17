@@ -11,6 +11,7 @@ struct SongListView: View {
     @EnvironmentObject var music: Music
     @State var searchText: String = ""
     @State var selection: Int = 0
+    @State var selectionSort: Int = 0
 
     var body: some View {
         NavigationView {
@@ -21,6 +22,12 @@ struct SongListView: View {
                         Text("Title").tag(0)
                         Text("Album Title").tag(1)
                         Text("Artist").tag(2)
+                    }, label: {})
+                        .pickerStyle(SegmentedPickerStyle())
+                        .labelsHidden()
+                    Picker(selection: self.$selectionSort, content: {
+                        Text("Title").tag(0)
+                        Text("Playcount").tag(1)
                     }, label: {})
                         .pickerStyle(SegmentedPickerStyle())
                         .labelsHidden()
@@ -45,7 +52,8 @@ struct SongListView: View {
             }
             .onSubmit(of: .text) {
                 self.music.setSongs(search: self.searchText,
-                                    selection: self.selection)
+                                    selection: self.selection,
+                                    selectionSort: self.selectionSort)
             }
             .navigationTitle(Text("\(self.music.songs.count) songs"))
 //            .navigationBarTitleDisplayMode(.inline)

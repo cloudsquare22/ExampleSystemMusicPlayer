@@ -196,7 +196,7 @@ final class Music: ObservableObject {
         }
     }
 
-    func setSongs(search: String, selection: Int) {
+    func setSongs(search: String, selection: Int, selectionSort: Int) {
         print(#function + ":\(search)")
 
         let predicateTitle = MPMediaPropertyPredicate(value: search, forProperty: MPMediaItemPropertyTitle, comparisonType: MPMediaPredicateComparison.contains)
@@ -217,7 +217,16 @@ final class Music: ObservableObject {
         }
         if let items = mPMediaQuery.items {
             let sortItems = items.sorted(by: { (a, b) -> Bool in
-                a.title! < b.title!
+                var result = true
+                switch(selectionSort) {
+                case 0:
+                    result = a.title! < b.title!
+                case 1:
+                    result = a.playCount < b.playCount
+                default:
+                    result = true
+                }
+                return result
             })
             print(sortItems.count)
             self.songs = sortItems
