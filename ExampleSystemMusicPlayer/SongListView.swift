@@ -25,12 +25,22 @@ struct SongListView: View {
                     }, label: {})
                         .pickerStyle(SegmentedPickerStyle())
                         .labelsHidden()
+                        .onChange(of: self.selection, perform: {newValue in
+                            self.music.setSongs(search: self.searchText,
+                                                selection: self.selection,
+                                                selectionSort: self.selectionSort)
+                        })
                     Picker(selection: self.$selectionSort, content: {
                         Text("Title").tag(0)
                         Text("Playcount").tag(1)
                     }, label: {})
                         .pickerStyle(SegmentedPickerStyle())
                         .labelsHidden()
+                        .onChange(of: self.selectionSort, perform: {newValue in
+                            self.music.setSongs(search: self.searchText,
+                                                selection: self.selection,
+                                                selectionSort: self.selectionSort)
+                        })
                 }
                 NavigationLink("Now Playing", destination: MediaItemView(item: self.music.player?.nowPlayingItem))
                 ForEach(0..<self.music.songs.count,  id: \.self) { index in
