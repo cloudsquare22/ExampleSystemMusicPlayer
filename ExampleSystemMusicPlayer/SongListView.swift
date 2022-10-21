@@ -58,9 +58,22 @@ struct SongListView: View {
                             }
                         }
                     }
+                    .swipeActions(edge: .leading, content: {
+                        Button(action: {
+                            self.music.onePlay(item: self.music.songs[index])
+                        }, label: {
+                            Label("Play", systemImage: "play")
+                        })
+                        .tint(.green)
+                    })
                 }
             }
             .onSubmit(of: .text) {
+                self.music.setSongs(search: self.searchText,
+                                    selection: self.selection,
+                                    selectionSort: self.selectionSort)
+            }
+            .refreshable {
                 self.music.setSongs(search: self.searchText,
                                     selection: self.selection,
                                     selectionSort: self.selectionSort)
