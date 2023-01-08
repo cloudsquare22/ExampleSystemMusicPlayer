@@ -189,7 +189,15 @@ final class Music: ObservableObject {
         let mPMediaQuery = MPMediaQuery.songs()
         if let items = mPMediaQuery.items {
             let sortItems = items.sorted(by: { (a, b) -> Bool in
-                a.title! < b.title!
+                var lastplayA: TimeInterval = 0
+                var lastplayB: TimeInterval = 0
+                if let lastplay = a.lastPlayedDate {
+                    lastplayA = lastplay.timeIntervalSince1970
+                }
+                if let lastplay = b.lastPlayedDate {
+                    lastplayB = lastplay.timeIntervalSince1970
+                }
+                return lastplayA > lastplayB
             })
             print(sortItems.count)
             self.songs = sortItems
@@ -222,7 +230,7 @@ final class Music: ObservableObject {
                 case 0:
                     result = a.title! < b.title!
                 case 1:
-                    result = a.playCount < b.playCount
+                    result = a.playCount > b.playCount
                 default:
                     result = true
                 }

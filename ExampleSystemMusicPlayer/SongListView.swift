@@ -49,6 +49,10 @@ struct SongListView: View {
                             HStack {
                                 Text(self.music.songs[index].title!)
                                 Spacer()
+                                if let lastdate = self.music.songs[index].lastPlayedDate {
+                                    Text(lastdate, style: .date)
+                                    Text(lastdate, style: .time)
+                                }
                                 Text("\(self.music.songs[index].playCount)")
                             }
                             HStack {
