@@ -55,6 +55,8 @@ final class Music: ObservableObject {
     @Published var artWork: UIImage? = nil
     @Published var playerModesStates: [(String, String)] = []
     @Published var songs: [MPMediaItem] = []
+    @Published var songInfoamrtionList: [SongInformation] = []
+    
     let playbackStateString = ["stopped", "playing", "paused", "interrupted", "seekingForward", "seekingBackward"]
     let repeatModeString = ["default", "none", "one", "all"]
     let shuffleModeString = ["default", "off", "songs", "albums"]
@@ -201,6 +203,28 @@ final class Music: ObservableObject {
             })
             print(sortItems.count)
             self.songs = sortItems
+            self.songInfoamrtionList = []
+            for song in sortItems {
+                let title = song.title != nil ? song.title! : ""
+                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
+                var artsit = ""
+                if song.albumArtist != nil {
+                    artsit = song.albumArtist!
+                }
+                else if song.artist != nil {
+                    artsit = song.artist!
+                }
+                var lastPlayDate = ""
+                if song.lastPlayedDate != nil {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "Y/M/d H:mm"
+                    dateFormatter.locale = .current
+                    lastPlayDate = dateFormatter.string(from: song.lastPlayedDate!)
+                }
+                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: lastPlayDate, playCount: String(song.playCount))
+                self.songInfoamrtionList.append(songInformation)
+            }
+            print(self.songInfoamrtionList.count)
         }
     }
 
@@ -247,4 +271,13 @@ final class Music: ObservableObject {
         self.player?.play()
     }
     
+}
+
+struct SongInformation: Identifiable {
+    let id: UUID = UUID()
+    let title: String
+    let albumTitle: String
+    let artist: String
+    let lastPlayDate: String
+    let playCount: String
 }
