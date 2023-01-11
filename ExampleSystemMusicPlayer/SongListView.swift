@@ -18,8 +18,20 @@ struct SongListView: View {
             TableColumn("Title", value: \.title)
             TableColumn("Album", value: \.albumTitle)
             TableColumn("Artist", value: \.artist)
-            TableColumn("Last", value: \.lastPlayDate)
-            TableColumn("Count", value: \.playCount)
+            TableColumn("Last") { songInformation in
+                if let lastdate = songInformation.lastPlayDate {
+                    HStack {
+                        Text(lastdate, style: .date)
+                        Text(lastdate, style: .time)
+                    }
+                }
+                else {
+                    Text("-")
+                }
+            }
+            TableColumn("Count" ) { songInformation in
+                Text("\(songInformation.playCount)")
+            }
         }
 //        NavigationView {
 //            List {
@@ -94,6 +106,9 @@ struct SongListView: View {
 //        }
         .onAppear() {
             print("SongListView." + #function)
+            self.music.setSongs()
+        }
+        .refreshable {
             self.music.setSongs()
         }
         .navigationViewStyle(StackNavigationViewStyle())

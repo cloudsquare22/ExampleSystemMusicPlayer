@@ -214,14 +214,7 @@ final class Music: ObservableObject {
                 else if song.artist != nil {
                     artsit = song.artist!
                 }
-                var lastPlayDate = ""
-                if song.lastPlayedDate != nil {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "Y/M/d H:mm"
-                    dateFormatter.locale = .current
-                    lastPlayDate = dateFormatter.string(from: song.lastPlayedDate!)
-                }
-                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: lastPlayDate, playCount: String(song.playCount))
+                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: song.lastPlayedDate, playCount: String(song.playCount))
                 self.songInfoamrtionList.append(songInformation)
             }
             print(self.songInfoamrtionList.count)
@@ -278,6 +271,6 @@ struct SongInformation: Identifiable {
     let title: String
     let albumTitle: String
     let artist: String
-    let lastPlayDate: String
+    let lastPlayDate: Date?
     let playCount: String
 }
