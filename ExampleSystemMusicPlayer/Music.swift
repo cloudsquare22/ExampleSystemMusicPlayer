@@ -56,7 +56,8 @@ final class Music: ObservableObject {
     @Published var playerModesStates: [(String, String)] = []
     @Published var songs: [MPMediaItem] = []
     @Published var songInfoamrtionList: [SongInformation] = []
-    
+    @Published var idMPMediaItemList: [IdMPMediaItem] = []
+
     let playbackStateString = ["stopped", "playing", "paused", "interrupted", "seekingForward", "seekingBackward"]
     let repeatModeString = ["default", "none", "one", "all"]
     let shuffleModeString = ["default", "off", "songs", "albums"]
@@ -190,33 +191,38 @@ final class Music: ObservableObject {
         self.songs = []
         let mPMediaQuery = MPMediaQuery.songs()
         if let items = mPMediaQuery.items {
-            let sortItems = items.sorted(by: { (a, b) -> Bool in
-                var lastplayA: TimeInterval = 0
-                var lastplayB: TimeInterval = 0
-                if let lastplay = a.lastPlayedDate {
-                    lastplayA = lastplay.timeIntervalSince1970
-                }
-                if let lastplay = b.lastPlayedDate {
-                    lastplayB = lastplay.timeIntervalSince1970
-                }
-                return lastplayA > lastplayB
-            })
-            print(sortItems.count)
-            self.songs = sortItems
+//            let sortItems = items.sorted(by: { (a, b) -> Bool in
+//                var lastplayA: TimeInterval = 0
+//                var lastplayB: TimeInterval = 0
+//                if let lastplay = a.lastPlayedDate {
+//                    lastplayA = lastplay.timeIntervalSince1970
+//                }
+//                if let lastplay = b.lastPlayedDate {
+//                    lastplayB = lastplay.timeIntervalSince1970
+//                }
+//                return lastplayA > lastplayB
+//            })
+//            print(sortItems.count)
+//            self.songs = sortItems
             self.songInfoamrtionList = []
-            for song in sortItems {
-                let title = song.title != nil ? song.title! : ""
-                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
-                var artsit = ""
-                if song.albumArtist != nil {
-                    artsit = song.albumArtist!
-                }
-                else if song.artist != nil {
-                    artsit = song.artist!
-                }
-                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: song.lastPlayedDate, playCount: String(song.playCount))
-                self.songInfoamrtionList.append(songInformation)
+            self.idMPMediaItemList = []
+            for song in items {
+                let item = IdMPMediaItem(item: song)
+                self.idMPMediaItemList.append(item)
+//
+//                let title = song.title != nil ? song.title! : ""
+//                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
+//                var artsit = ""
+//                if song.albumArtist != nil {
+//                    artsit = song.albumArtist!
+//                }
+//                else if song.artist != nil {
+//                    artsit = song.artist!
+//                }
+//                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: song.lastPlayedDate, playCount: String(song.playCount))
+//                self.songInfoamrtionList.append(songInformation)
             }
+            print(self.idMPMediaItemList.count)
             print(self.songInfoamrtionList.count)
         }
     }
@@ -273,4 +279,9 @@ struct SongInformation: Identifiable {
     let artist: String
     let lastPlayDate: Date?
     let playCount: String
+}
+
+struct IdMPMediaItem: Identifiable{
+    let item: MPMediaItem
+    let id: UUID = UUID()
 }
