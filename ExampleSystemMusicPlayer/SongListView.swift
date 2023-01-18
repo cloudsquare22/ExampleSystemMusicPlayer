@@ -13,7 +13,10 @@ struct SongListView: View {
     @State var selection: Int = 0
     @State var selectionSort: Int = 0
 
-    @State private var sortOrder = [KeyPathComparator(\SongInformation.title)]
+    @State private var sortOrder = [KeyPathComparator(\SongInformation.title),
+                                    KeyPathComparator(\SongInformation.albumTitle),
+                                    KeyPathComparator(\SongInformation.artist),
+                                    KeyPathComparator(\SongInformation.playCount)]
 
     var body: some View {
         Table(self.music.songInfoamrtionList, sortOrder: $sortOrder) {
