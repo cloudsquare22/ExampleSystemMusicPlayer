@@ -7,19 +7,21 @@
 
 import SwiftUI
 
+private var songs = [
+    SongInformation(title: "AAAAA", albumTitle: "AAAAA", artist: "AAAAA"),
+SongInformation(title: "BBBBB", albumTitle: "BBBBB", artist: "BBBBB"),
+    SongInformation(title: "CCCCC", albumTitle: "CCCCC", artist: "CCCCC")]
+
 struct SongListView: View {
     @EnvironmentObject var music: Music
     @State var searchText: String = ""
     @State var selection: Int = 0
     @State var selectionSort: Int = 0
 
-    @State private var sortOrder = [KeyPathComparator(\SongInformation.title),
-                                    KeyPathComparator(\SongInformation.albumTitle),
-                                    KeyPathComparator(\SongInformation.artist),
-                                    KeyPathComparator(\SongInformation.playCount)]
+    @State private var sortOrder = [KeyPathComparator(\SongInformation.title)]
 
     var body: some View {
-        Table(self.music.songInfoamrtionList, sortOrder: $sortOrder) {
+        Table(songs, sortOrder: $sortOrder) {
             TableColumn("Title", value: \.title)
             TableColumn("Album", value: \.albumTitle)
             TableColumn("Artist", value: \.artist)
@@ -34,20 +36,23 @@ struct SongListView: View {
 //                    Text("-")
 //                }
 //            }
-            TableColumn("Count") { item in
-                Text("\(item.playCount)")
-            }
-        }
-        .onAppear() {
-            print("SongListView." + #function)
-            self.music.setSongs()
-        }
-        .refreshable {
-            self.music.setSongs()
+//            TableColumn("Count") { item in
+//                Text("\(item.playCount)")
+//            }
         }
         .onChange(of: sortOrder) {
             print("onchanged sort")
-            self.music.songInfoamrtionList.sort(using: $0)
+//            self.music.songInfoamrtionList.sort(using: $0)
+            songs.sort(using: $0)
+ 
+        }
+        .onAppear() {
+            print("SongListView." + #function)
+            songs = self.music.testSongs()
+//            self.music.setSongs()
+        }
+        .refreshable {
+            self.music.setSongs()
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

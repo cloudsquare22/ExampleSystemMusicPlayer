@@ -219,12 +219,33 @@ final class Music: ObservableObject {
                 else if song.artist != nil {
                     artsit = song.artist!
                 }
-                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit, lastPlayDate: song.lastPlayedDate, playCount: song.playCount)
+                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit)
                 self.songInfoamrtionList.append(songInformation)
             }
             print(self.idMPMediaItemList.count)
             print(self.songInfoamrtionList.count)
         }
+    }
+    
+    func testSongs() -> [SongInformation] {
+        var songs: [SongInformation] = []
+        let mPMediaQuery = MPMediaQuery.songs()
+        if let items = mPMediaQuery.items {
+            for song in items {
+                let title = song.title != nil ? song.title! : ""
+                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
+                var artsit = ""
+                if song.albumArtist != nil {
+                    artsit = song.albumArtist!
+                }
+                else if song.artist != nil {
+                    artsit = song.artist!
+                }
+                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit)
+                songs.append(songInformation)
+            }
+        }
+        return songs
     }
 
     func setSongs(search: String, selection: Int, selectionSort: Int) {
@@ -273,12 +294,10 @@ final class Music: ObservableObject {
 }
 
 struct SongInformation: Identifiable {
-    let id: UUID = UUID()
     let title: String
     let albumTitle: String
     let artist: String
-    let lastPlayDate: Date?
-    let playCount: Int
+    let id: UUID = UUID()
 }
 
 struct IdMPMediaItem: Identifiable{
