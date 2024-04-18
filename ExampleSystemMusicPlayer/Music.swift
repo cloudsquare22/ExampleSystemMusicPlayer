@@ -69,6 +69,7 @@ final class Music: ObservableObject {
         self.mediaItem = self.player!.nowPlayingItem
         setPropertyValues()
         setPlayerModesStates()
+        setSongs()
     }
 
     @objc func changeMusic(_ notification:Notification?) {
@@ -207,20 +208,20 @@ final class Music: ObservableObject {
             self.songInfoamrtionList = []
             self.idMPMediaItemList = []
             for song in items {
-//                let item = IdMPMediaItem(item: song)
-//                self.idMPMediaItemList.append(item)
+                let item = IdMPMediaItem(item: song)
+                self.idMPMediaItemList.append(item)
 
-                let title = song.title != nil ? song.title! : ""
-                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
-                var artsit = ""
-                if song.albumArtist != nil {
-                    artsit = song.albumArtist!
-                }
-                else if song.artist != nil {
-                    artsit = song.artist!
-                }
-                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit)
-                self.songInfoamrtionList.append(songInformation)
+//                let title = song.title != nil ? song.title! : ""
+//                let albumTitle = song.albumTitle != nil ? song.albumTitle! : ""
+//                var artsit = ""
+//                if song.albumArtist != nil {
+//                    artsit = song.albumArtist!
+//                }
+//                else if song.artist != nil {
+//                    artsit = song.artist!
+//                }
+//                let songInformation = SongInformation(title: title, albumTitle: albumTitle, artist: artsit)
+//                self.songInfoamrtionList.append(songInformation)
             }
             print(self.idMPMediaItemList.count)
             print(self.songInfoamrtionList.count)

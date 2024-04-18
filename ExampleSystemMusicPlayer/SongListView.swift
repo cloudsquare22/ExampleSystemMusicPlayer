@@ -7,54 +7,48 @@
 
 import SwiftUI
 
-private var songs = [
-    SongInformation(title: "AAAAA", albumTitle: "AAAAA", artist: "AAAAA"),
-SongInformation(title: "BBBBB", albumTitle: "BBBBB", artist: "BBBBB"),
-    SongInformation(title: "CCCCC", albumTitle: "CCCCC", artist: "CCCCC")]
-
 struct SongListView: View {
     @EnvironmentObject var music: Music
     @State var searchText: String = ""
     @State var selection: Int = 0
     @State var selectionSort: Int = 0
+    @State var serchtext: String = ""
 
-    @State private var sortOrder = [KeyPathComparator(\SongInformation.title)]
+    @State private var sortOrder: [KeyPathComparator<IdMPMediaItem>] = []
 
     var body: some View {
-        Table(songs, sortOrder: $sortOrder) {
-            TableColumn("Title", value: \.title)
-            TableColumn("Album", value: \.albumTitle)
-            TableColumn("Artist", value: \.artist)
-//            TableColumn("Last") { item in
-//                if let lastdate = item.lastPlayedDate {
-//                    HStack {
-//                        Text(lastdate, style: .date)
-//                        Text(lastdate, style: .time)
-//                    }
-//                }
-//                else {
-//                    Text("-")
-//                }
-//            }
-//            TableColumn("Count") { item in
-//                Text("\(item.playCount)")
-//            }
+        NavigationStack {
+            Table(self.music.idMPMediaItemList, sortOrder: self.$sortOrder) {
+                TableColumn("Title", value: \.item.title!)
+                TableColumn("Album", value: \.item.albumTitle!)
+                TableColumn("Artist", value: \.item.artist!)
+                TableColumn("Count", value: \.item.playCount.description)
+                    .width(100)
+                TableColumn("Last") { item in
+                    if let lastdate = item.item.lastPlayedDate {
+                        Text(lastdate, style: .date)
+                    }
+                    else {
+                        Text("-")
+                    }
+                }
+                .width(150)
+            }
+            .foregroundStyle(.white)
+            .onChange(of: sortOrder) { old, new in
+                self.music.idMPMediaItemList.sort(using: new)
+            }
+            .onAppear() {
+                print("SongListView." + #function)
+            }
+            .refreshable {
+                self.music.setSongs()
+            }
         }
-        .onChange(of: sortOrder) {
-            print("onchanged sort")
-//            self.music.songInfoamrtionList.sort(using: $0)
-            songs.sort(using: $0)
- 
+        .searchable(text: self.$searchText)
+        .onChange(of: self.serchtext) { old, new in
+            
         }
-        .onAppear() {
-            print("SongListView." + #function)
-            songs = self.music.testSongs()
-//            self.music.setSongs()
-        }
-        .refreshable {
-            self.music.setSongs()
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
