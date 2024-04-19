@@ -34,7 +34,7 @@ struct SongListView: View {
                 }
                 .width(150)
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(.primary)
             .onChange(of: sortOrder) { old, new in
                 self.music.idMPMediaItemList.sort(using: new)
             }
